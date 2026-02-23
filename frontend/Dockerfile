@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
+RUN npm install @types/node@18.11.18 --save-dev
 
 COPY . .
 
@@ -13,13 +14,10 @@ RUN npm run build -- --configuration production
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
 
-# Remove default nginx static files
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built Angular files
 COPY --from=builder /app/dist/angular-15-crud /usr/share/nginx/html
 
-# Copy nginx config for Angular routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
