@@ -57,7 +57,6 @@ pipeline {
             steps {
                 echo "Deploying with Docker Compose..."
                 sh """
-                    cd /root/crud-dd-task-mean-app
                     DOCKER_USERNAME=$DOCKER_USERNAME IMAGE_TAG=latest docker compose pull
                     DOCKER_USERNAME=$DOCKER_USERNAME IMAGE_TAG=latest docker compose up -d --remove-orphans
                 """
