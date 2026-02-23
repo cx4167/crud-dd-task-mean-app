@@ -57,6 +57,10 @@ pipeline {
             steps {
                 echo "Deploying with Docker Compose..."
                 sh """
+                    docker ps -q --filter name=mongodb | xargs -r docker stop | xargs -r docker rm || true
+                    docker ps -q --filter name=backend | xargs -r docker stop | xargs -r docker rm || true
+                    docker ps -q --filter name=frontend | xargs -r docker stop | xargs -r docker rm || true
+                    docker ps -q --filter name=nginx | xargs -r docker stop | xargs -r docker rm || true
                     DOCKER_USERNAME=$DOCKER_USERNAME IMAGE_TAG=latest docker compose pull
                     DOCKER_USERNAME=$DOCKER_USERNAME IMAGE_TAG=latest docker compose up -d --remove-orphans
                 """
